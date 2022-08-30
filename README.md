@@ -1,1 +1,1 @@
-# QA Code Generator
+# QR Code Generator
