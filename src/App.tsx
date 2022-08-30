@@ -4,7 +4,21 @@ import Spinner from './components/Spinner';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDisplayingQrCode, setIsDisplayingQrCode] = useState(false);
   const [qrValue, setQrValue] = useState('');
+
+  const generateQrCode = (): void => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsDisplayingQrCode(true);
+    }, 1500);
+  };
+
+  const handleQrChange = (e: any): void => {
+    setIsDisplayingQrCode(false);
+    setQrValue(e.target.value);
+  };
 
   return (
     <div className='App'>
@@ -31,15 +45,20 @@ const App: React.FC = () => {
               className='w-full border-2 boder-gray-200 rounded p-3 text-gray-dark mr-2 focus:outline-none mb-5 mt-4'
               type='url'
               placeholder='Enter a URL'
-            ></input>
-            <button className='bg-gray-600 rounded w-full text-white py-3 px-4 mt-5 hover:bg-blue-500'>
+              value={qrValue}
+              onChange={handleQrChange}
+            />
+            <button
+              className='bg-gray-600 rounded w-full text-white py-3 px-4 mt-5 hover:bg-blue-500'
+              onClick={generateQrCode}
+            >
               Generate QR Code
             </button>
           </div>
         </div>
         <div className='flex align-center justify-center p-10 m-auto md:max-w-2xl'>
-          <Spinner />
-          <QRCode value={qrValue} />
+          {isLoading && <Spinner />}
+          {qrValue && isDisplayingQrCode && <QRCode value={qrValue} />}
         </div>
       </main>
     </div>
